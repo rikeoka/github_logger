@@ -1,16 +1,16 @@
 var Events = module.exports = {};
 
 Events.eventTypes = eventTypes = [
+  // 'download', deprecated
+  // 'follow', deprecated
+  // 'fork_apply', deprecated
+  // 'gist', deprecated
   'commit_comment',
   'create',
   'delete',
   'deployment',
   'deployment_status',
-  // 'download', deprecated
-  // 'follow', deprecated
   'fork',
-  // 'fork_apply', deprecated
-  // 'gist', deprecated
   'gollum',
   'issue_comment',
   'issues',
