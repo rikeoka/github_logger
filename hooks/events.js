@@ -27,7 +27,7 @@ Events.eventTypes = eventTypes = [
   'status',
   'team_add',
   'watch'
-]
+];
 
 eventTypes.forEach(function (type) {
   Events[type] = require('./' + type);

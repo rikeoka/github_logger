@@ -1,13 +1,13 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var SplunkLogger = require("splunk-logging").Logger;
+var SplunkLogger = require('splunk-logging').Logger;
 
-var hmacValidation = require("./utils/hmac")("sha1", process.env['HMAC_SECRET'], "HTTP_X_HUB_SIGNATURE")
+var hmacValidation = require('./utils/hmac')('sha1', process.env['HMAC_SECRET'], 'HTTP_X_HUB_SIGNATURE');
 var flatten = require('./utils/flatten');
 var events = require('./hooks/events');
 
 var app = express();
-var jsonParser = bodyParser.json()
+var jsonParser = bodyParser.json();
 
 if (!!process.env['HMAC_SECRET']) {
   app.post('/', hmacValidation, jsonParser, processWebhook);
@@ -19,7 +19,7 @@ if (!!process.env['SPLUNK_TOKEN'] && !!process.env['SPLUNK_URL']) {
   var splunkConfig = {
     token: process.env['SPLUNK_TOKEN'],
     url: process.env['SPLUNK_URL']
-  }
+  };
   Logger = new SplunkLogger(splunkConfig);
 } else {
   Logger = console;

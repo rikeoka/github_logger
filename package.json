@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node app.js",
     "test": "mocha --recursive --reporter dot",
-    "posttest": "eslint *.js config lib test"
+    "posttest": "eslint *.js utils hooks test"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
