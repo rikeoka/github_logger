@@ -11,9 +11,11 @@
     "body-parser": "^1.15.2",
     "buffer-equal-constant-time": "^1.0.1",
     "express": "^4.14.0",
+    "hmac-express": "^1.4.0",
     "splunk-logging": "github:rikeoka/splunk-javascript-logging"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
     "mocha": "^3.1.2",
     "sinon": "^1.17.6"
   },

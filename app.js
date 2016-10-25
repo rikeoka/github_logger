@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var SplunkLogger = require('splunk-logging').Logger;
 
-var hmacValidation = require('./utils/hmac')('sha1', process.env['HMAC_SECRET'], 'HTTP_X_HUB_SIGNATURE');
+var hmacValidation = require('hmac-express')('sha1', process.env['HMAC_SECRET'], '', {header: 'HTTP_X_HUB_SIGNATURE'});
 var flatten = require('./utils/flatten');
 var events = require('./hooks/events');
 
@@ -48,4 +48,3 @@ Logger.log(events);
 events.eventTypes.forEach(function (type) {
   Logger.log(events[type]({}));
 });
-process.exit(1);
