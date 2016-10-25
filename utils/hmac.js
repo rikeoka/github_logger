@@ -1,4 +1,5 @@
 var crypto = require("crypto");
+var bufferEq = require("buffer-equal-constant-time");
 
 module.exports = function (algorithm, key, header) {
 	var algorithm = algorithm;
@@ -13,10 +14,13 @@ module.exports = function (algorithm, key, header) {
 		}
 
     if (!request.headers || !request.headers[header]) return response.sendStatus(401);
-    var computedHmac = hmac.digest(encoding);
-    var receivedHmac = request.headers[header];
+    var computedHmac = new Buffer(hmac.digest(encoding));
+    var receivedHmac = new Buffer(request.headers[header]);
 
-    if (receivedHmac !== computedHmac) return response.sendStatus(401);
-		next()
+    if (bufferEq(receivedHmac, computedHmac)) {
+      next();
+    } else {
+      return response.sendStatus(401);
+		}
 	}
 }
