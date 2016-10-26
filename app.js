@@ -33,8 +33,6 @@ function processWebhook(req, res) {
   payload = flatten(req.body.payload);
 
   var githubEvent = req.header['X-GitHub-Event'];
-  if ( githubEvent === 'gollum') { payload.pages = req.body.payload.pages; }
-  if ( githubEvent === 'issues') { payload.labels = req.body.payload.issue.labels; }
   if (events.eventTypes.includes(githubEvent)){
     event = events[githubEvent](payload);
   } else {
