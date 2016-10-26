@@ -16,8 +16,8 @@ describe('gollum', function () {
     var contents = flatten(payload.payload);
     var response = handler(contents);
     var diff = (new Date()) - response['time'];
-    delete(response['time']);
-    delete(payload.clean.time);
+    delete response['time'];
+    delete payload.clean.time;
     diff.should.be.lt(2 * 1000);
     response.should.be.eql(payload.clean);
   });
