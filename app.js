@@ -30,9 +30,9 @@ app.listen(process.env.PORT || 3000, function() {
 });
 
 function processWebhook(req, res) {
-  payload = flatten(req.body.payload);
+  payload = flatten(req.body);
 
-  var githubEvent = req.header['X-GitHub-Event'];
+  var githubEvent = req.get('X-GitHub-Event');
   if (events.eventTypes.includes(githubEvent)){
     event = events[githubEvent](payload);
   } else {
@@ -41,8 +41,3 @@ function processWebhook(req, res) {
   Logger.log(event);
   res.sendStatus(204);
 }
-
-Logger.log(events);
-events.eventTypes.forEach(function (type) {
-  Logger.log(events[type]({}));
-});
