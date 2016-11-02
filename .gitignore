@@ -1,5 +1,5 @@
 # Non test key files
-/*.pem
+/cert/*.pem
 
 # Logs
 logs
