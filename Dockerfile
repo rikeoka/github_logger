@@ -6,6 +6,7 @@ WORKDIR /app
 COPY package.json /app/
 RUN npm install --only=production
 COPY app.js /app
+COPY cert /cert
 COPY hooks /app/hooks
 COPY utils /app/utils
 
