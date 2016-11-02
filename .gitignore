@@ -1,5 +1,6 @@
 # Non test key files
 /cert/*.pem
+.env
 
 # Logs
 logs

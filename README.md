@@ -30,6 +30,41 @@ npm start
 
 ```
 
+Docker Usage
+============
+
+* Move your cert files into ./cert if you wish to bundle your cert in the image.  This may be a security concern
+and it may be better to link your cert files when running the image
+* Build the docker image
+```Bash
+sudo docker build --tag=github_logger:latest .
+```
+* Run the docker image, there are several ways to do this:
+    * Run with individually declared env variables
+    ```Bash
+    sudo docker run -d -p 443:443 --name=github_logger --env SPLUNK_TOKEN=token --env SPLUNK_URL=url github_logger:latest 
+    ```
+    * Run with env variable file
+    ```Bash 
+    sudo docker run -d -p 443:443 --name=github_logger --env-file .env github_logger:latest 
+    ```
+    * Run with cert folder linking
+    ```Bash 
+    sudo docker run -d -p 443:443 --name=github_logger --env-file .env -v $HOME/certs:/cert github_logger:latest
+    ```
+* View tail of logs:
+```Bash
+sudo docker logs github_logger
+```
+* Stop the container:
+```Bash
+sudo docker stop github_logger
+```
+* Remove the container after stopping:
+```Bash
+sudo docker rm github_logger
+```
+
 Testing
 =======
 
