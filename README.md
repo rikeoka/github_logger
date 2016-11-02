@@ -52,7 +52,7 @@ sudo docker build --tag=github_logger:latest .
     ```
     * Run with cert folder linking
     ```Bash 
-    sudo docker run -d -p 443:443 --name=github_logger --env-file .env -v $HOME/certs:/cert github_logger:latest
+    sudo docker run -d -p 443:443 --name=github_logger --env-file .env -v $HOME/cert:/cert github_logger:latest
     ```
 * View tail of logs:
 ```Bash
@@ -81,7 +81,10 @@ Configuration Options
 * **SPLUNK_URL** (**optional**) - your splunk http collector do not include url path for example https://localhost:8088/,
 if not present will log to console - example: "https://splunk.local:8088"
 * **HMAC_SECRET** (**optional**) - your secret configured in gitHub for the webhook.  If not present
-will not use HMAC digest verification
+will not use HMAC digest verification.  To generate a random secret you can run the following:
+    ```Code 
+    ruby -rsecurerandom -e 'puts SecureRandom.hex(20)' 
+    ```
 * **PORT** (**optional**) - the port you wish the webserver to listen.  If not present 3000 is used.
 * **KEY_FILE** (**recommended**) - the path to your private key PEM file.  If this and CERT_FILE is present HTTPS server
 is started
