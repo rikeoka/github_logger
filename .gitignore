@@ -1,3 +1,6 @@
+# Non test key files
+/*.pem
+
 # Logs
 logs
 *.log
