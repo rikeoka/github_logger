@@ -24,20 +24,21 @@ if (!!process.env['SPLUNK_TOKEN'] && !!process.env['SPLUNK_URL']) {
   Logger = console;
 }
 
-app.listen(process.env.PORT || 3000, function() {
+var server = app.listen(process.env.PORT || 3000, function() {
   console.log('Github Logger listening on port 3000');
 });
 
 function processWebhook(req, res) {
-  payload = flatten(req.body);
+  var payload = flatten(req.body);
+  var githubEvent = req.get('x-github-event');
 
-  var githubEvent = req.get('x-gitHub-event');
   if (events.eventTypes.includes(githubEvent)){
-    event = events[githubEvent](payload);
+    payload = events[githubEvent](payload);
   } else {
-    event = payload;
+    res.sendStatus(500);
+    return;
   }
-  Logger.log(event);
+  Logger.log(payload);
   res.sendStatus(204);
 }
 
@@ -50,7 +51,7 @@ function hmacV(req, res, next) {
 
   req.on('end', function() {
     var calculated = new Buffer(signature(process.env['HMAC_SECRET'], payload));
-    var provided = new Buffer(req.get('x-hub-signature'));
+    var provided = new Buffer(req.get('x-hub-signature') || '');
 
     if (bufferEq(calculated, provided)) {
       req.body = JSON.parse(payload);
@@ -64,3 +65,5 @@ function hmacV(req, res, next) {
 function signature(secret, body) {
   return 'sha1=' + crypto.createHmac('sha1', secret).update(body).digest('hex');
 }
+
+module.exports = server;
