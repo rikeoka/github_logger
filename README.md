@@ -77,7 +77,7 @@ Configuration Options
 
 * **SPLUNK_TOKEN** (**optional**) - your splunk token, if not present will log to console
 * **SPLUNK_URL** (**optional**) - your splunk http collector do not include url path for example https://localhost:8088/,
-if not present will log to console
+if not present will log to console - example: "https://splunk.local:8088"
 * **HMAC_SECRET** (**optional**) - your secret configured in gitHub for the webhook.  If not present
 will not use HMAC digest verification
 * **PORT** (**optional**) - the port you wish the webserver to listen.  If not present 3000 is used.
