@@ -4,6 +4,8 @@ About
 =====
 Takes incoming gitHub webhooks, normalizes the event and ships them to Splunk.  
 
+Warning
+=======
 **Webhooks are sent over the Internet from gitHub.  It is _highly recommended_ to run this using HTTPS, but HTTP mode is 
 provided for development and testing.  _Use of HTTP mode may result in the webhooks being intercepted in transit_**
 
@@ -88,6 +90,18 @@ is started
 * **HTTP_MODE** (**optional**) - If set to any truthy vale ie 1, forces the server to start using HTTP.  Not recommended
 to run this server in HTTP mode as any request from gitHub to the server would be sent in plain text and can be 
 intercepted.
+
+Organization Configuration
+==========================
+
+To configure your organization to send events to the logging webapp, perform the following:
+* Go to your organization webhook settings at https://www.github.com/organizations/:org_name/settings/hooks
+* Click 'Add Webhook'
+* Enter your server URL in 'Payload URL' **See warning above**
+* Set 'Content-Type' to 'application/json'
+* Enter a randomly generated sequence of ASCII characters in the 'Secret' field.  This is used for HMAC signature
+verification.
+
 
 Contributing
 ============
