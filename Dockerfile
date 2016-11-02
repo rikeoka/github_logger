@@ -4,7 +4,7 @@ RUN mkdir -p /app
 WORKDIR /app
 
 COPY package.json /app/
-RUN npm install --only=production
+RUN npm install --only=production --silent
 COPY app.js /app
 COPY cert /cert
 COPY hooks /app/hooks
