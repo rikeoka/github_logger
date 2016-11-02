@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+  - 6
+  - 6.9
+  - 7
+sudo: false
+branches:
+  only: master
+before_script:
+  - npm install
+script: npm test

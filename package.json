@@ -1,0 +1,36 @@
+{
+  "name": "github_logger",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "mocha --recursive --reporter dot",
+    "posttest": "eslint *.js utils hooks test"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "buffer-equal-constant-time": "^1.0.1",
+    "express": "^4.14.0",
+    "splunk-logging": "github:rikeoka/splunk-javascript-logging"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^3.8.1",
+    "mocha": "^3.1.2",
+    "rewire": "^2.5.2",
+    "sinon": "^1.17.6",
+    "supertest": "^2.0.1"
+  },
+  "keywords": [
+    "gitHub",
+    "Splunk",
+    "logs",
+    "gitHub webhooks"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://www.github.com/rikeoka/github_logger.git"
+  },
+  "homepage": "https://www.github.com/rikeoka/github_logger"
+}
