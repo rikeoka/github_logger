@@ -3,17 +3,22 @@ var bodyParser = require('body-parser');
 var SplunkLogger = require('splunk-logging').Logger;
 var crypto = require('crypto');
 var bufferEq = require('buffer-equal-constant-time');
+var fs = require('fs');
+var http = require('http');
+var https = require('https');
 
 var flatten = require('./utils/flatten');
 var events = require('./hooks/events');
 
 var app = express();
+// if HMAC_SECRET is set use HMAC validation
 if (!!process.env['HMAC_SECRET']) {
   app.post('/', hmacV, processWebhook);
 } else {
   app.post('/', bodyParser.json(), processWebhook);
 }
 
+// Setup logging to splunk if splunk configs are available
 if (!!process.env['SPLUNK_TOKEN'] && !!process.env['SPLUNK_URL']) {
   var splunkConfig = {
     token: process.env['SPLUNK_TOKEN'],
@@ -24,9 +29,33 @@ if (!!process.env['SPLUNK_TOKEN'] && !!process.env['SPLUNK_URL']) {
   Logger = console;
 }
 
-var server = app.listen(process.env.PORT || 3000, function() {
-  console.log('Github Logger listening on port 3000');
-});
+// Start server
+var port = process.env.PORT || 3000;
+var server = {};
+var startHttps = false;
+var certificate = {};
+
+if (process.env['KEY_FILE'] && process.env['CERT_FILE'] && !process.env['HTTP_MODE']) {
+  try {
+    certificate = {
+      key: fs.readFileSync(process.env['KEY_FILE']),
+      cert: fs.readFileSync(process.env['CERT_FILE'])
+    };
+    startHttps = !process.env['HTTP_MODE'];
+  } catch (e) {
+    startHttps = false;
+  }
+}
+
+if (startHttps) {
+  server = https.createServer(certificate, app).listen(port, function() {
+    console.log('Github Logger listening with HTTPS on port ' + port.toString());
+  });
+} else {
+  server = http.createServer(app).listen(port, function() {
+    console.log('Github Logger listening with HTTP on port ' + port.toString());
+  });
+}
 
 function processWebhook(req, res) {
   var payload = flatten(req.body);

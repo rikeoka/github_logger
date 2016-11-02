@@ -1,5 +1,4 @@
 // common includes
-var flatten = require('../../utils/flatten');
 var should = require('chai').should();
 
 // handler specific includes
@@ -7,7 +6,7 @@ var events = require('../../hooks/events');
 
 describe('events', function () {
   it('List includes active handlers', function () {
-    var valid_events = [
+    var validEvents = [
       'commit_comment',
       'create',
       'delete',
@@ -31,7 +30,7 @@ describe('events', function () {
       'team_add',
       'watch'
     ];
-    events.eventTypes.should.eql(valid_events);
+    events.eventTypes.should.eql(validEvents);
   });
 
   it('has a function that returns object when passed an object', function() {

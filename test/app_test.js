@@ -8,7 +8,6 @@ var sinon = require('sinon');
 var rewire = require('rewire');
 var SplunkLogger = require('splunk-logging').Logger;
 
-
 describe('app server', function() {
   var server;
 
@@ -16,6 +15,9 @@ describe('app server', function() {
     delete process.env['HMAC_SECRET'];
     delete process.env['SPLUNK_TOKEN'];
     delete process.env['SPLUNK_URL'];
+    delete process.env['HTTP_MODE'];
+    delete process.env['KEY_FILE'];
+    delete process.env['CERT_FILE'];
     body = '{"a": "b"}';
   });
 
@@ -23,6 +25,9 @@ describe('app server', function() {
     delete process.env['HMAC_SECRET'];
     delete process.env['SPLUNK_TOKEN'];
     delete process.env['SPLUNK_URL'];
+    delete process.env['HTTP_MODE'];
+    delete process.env['KEY_FILE'];
+    delete process.env['CERT_FILE'];
     server.close(done);
   });
 
@@ -133,7 +138,7 @@ describe('app server', function() {
       });
     });
 
-    it("uses console.log", function() {
+    it('uses console.log', function() {
       server.__get__('Logger').should.eq(console);
     });
   });
@@ -148,8 +153,82 @@ describe('app server', function() {
       });
     });
 
-    it("uses splunk logger", function() {
+    it('uses splunk logger', function() {
       server.__get__('Logger').should.be.an.instanceOf(SplunkLogger);
+    });
+  });
+
+  describe('server mode', function() {
+    describe('with cert file and key file', function() {
+      beforeEach(function() {
+        process.env['KEY_FILE'] = 'test/fixtures/key.pem';
+        process.env['CERT_FILE'] = 'test/fixtures/cert.pem';
+        server = rewire('../app');
+        server.__set__('console', {
+          log: sinon.spy()
+        });
+      });
+
+      it('creates https server', function() {
+        server.__get__('startHttps').should.be.true;
+      });
+    });
+
+    describe('with cert file and key file and HTTP_MODE set', function() {
+      beforeEach(function() {
+        process.env['KEY_FILE'] = 'test/fixtures/key.pem';
+        process.env['CERT_FILE'] = 'test/fixtures/cert.pem';
+        process.env['HTTP_MODE'] = 1;
+        server = rewire('../app');
+        server.__set__('console', {
+          log: sinon.spy()
+        });
+      });
+
+      it('creates http server', function() {
+        server.__get__('startHttps').should.be.false;
+      });
+    });
+
+    describe('with cert file and no key file', function() {
+      beforeEach(function() {
+        process.env['CERT_FILE'] = 'test/fixtures/cert.pem';
+        server = rewire('../app');
+        server.__set__('console', {
+          log: sinon.spy()
+        });
+      });
+
+      it('creates https server', function() {
+        server.__get__('startHttps').should.be.false;
+      });
+    });
+
+    describe('with key file and no cert file', function() {
+      beforeEach(function() {
+        process.env['KEY_FILE'] = 'test/fixtures/key.pem';
+        server = rewire('../app');
+        server.__set__('console', {
+          log: sinon.spy()
+        });
+      });
+
+      it('creates https server', function() {
+        server.__get__('startHttps').should.be.false;
+      });
+    });
+
+    describe('without cert file and key file', function() {
+      beforeEach(function() {
+        server = rewire('../app');
+        server.__set__('console', {
+          log: sinon.spy()
+        });
+      });
+
+      it('creates https server', function() {
+        server.__get__('startHttps').should.be.false;
+      });
     });
   });
 });
