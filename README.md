@@ -2,7 +2,7 @@
 
 About
 =====
-Takes incoming gitHub webhooks, normalizes the event and ships them to Splunk.  
+Takes incoming gitHub webhooks, normalizes the event and ships them to Splunk.
 
 Warning
 =======
@@ -31,6 +31,11 @@ export HTTP_MODE=1-for_http_only, ignore_or_0-for_https_only
 npm start
 
 ```
+
+Ping
+====
+The app supports responding to ping checks at the following endpoints index.html and /ping using the GET method.  
+This allows for load balancers to detect that the app is up and running.
 
 Docker Usage
 ============
@@ -82,7 +87,7 @@ Configuration Options
 if not present will log to console - example: "https://splunk.local:8088"
 * **HMAC_SECRET** (**optional**) - your secret configured in gitHub for the webhook.  If not present
 will not use HMAC digest verification.  To generate a random secret you can run the following:
-    ```Code 
+    ```Bash 
     ruby -rsecurerandom -e 'puts SecureRandom.hex(20)' 
     ```
 * **PORT** (**optional**) - the port you wish the webserver to listen.  If not present 3000 is used.
