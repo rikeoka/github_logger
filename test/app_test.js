@@ -31,6 +31,20 @@ describe('app server', function() {
     server.close(done);
   });
 
+  describe('ping', function() {
+    beforeEach(function() {
+      server = rewire('../app');
+    });
+
+    it('responds with 200 for a call to /index.html', function(done) {
+      request(server).get('/index.html').expect(200, done);
+    });
+
+    it('responds with 200 for a call to /ping', function(done) {
+      request(server).get('/ping/').expect(200, done);
+    });
+  });
+
   describe('without HMAC (no HMAC_SECRET)', function() {
     beforeEach(function() {
       server = rewire('../app');

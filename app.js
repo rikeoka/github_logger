@@ -17,6 +17,8 @@ if (!!process.env['HMAC_SECRET']) {
 } else {
   app.post('/', bodyParser.json(), processWebhook);
 }
+app.get('/ping', ping);
+app.get('/index.html', ping);
 
 // Setup logging to splunk if splunk configs are available
 if (!!process.env['SPLUNK_TOKEN'] && !!process.env['SPLUNK_URL']) {
@@ -69,6 +71,10 @@ function processWebhook(req, res) {
   }
   Logger.log(payload);
   res.sendStatus(204);
+}
+
+function ping(req, res) {
+  res.sendStatus(200);
 }
 
 function hmacV(req, res, next) {
